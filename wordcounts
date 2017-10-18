@@ -1,0 +1,82 @@
+  
+
+def wordcounts(url):
+    #import requests
+    import requests
+
+    #create the response object
+    r = requests.get(url)
+
+
+    #extract the html from the response object
+    html = r.text
+
+    #import BeautifulSoup
+    from bs4 import BeautifulSoup
+    
+
+    #make a beautiful soup object from the html
+    soup=BeautifulSoup(html, 'html5lib')
+
+    #get title
+    title = soup.title.string
+    
+    #get text from soup
+    text = soup.get_text()
+    
+    #placeholder to remove unwanted text and beginning and end
+
+    #make all lower case
+    text = text.lower()#alternate tokenization method
+
+    #Tokenize
+    # Import RegexpTokenizer from nltk.tokenize
+    from nltk.tokenize import RegexpTokenizer
+
+    # Create tokenizer
+    tokenizer = RegexpTokenizer('\w+')
+
+    # Create tokens
+    tokens = tokenizer.tokenize(text)
+   
+    #import nltk
+    import nltk
+
+    #if stop words not downloaded
+    #nltk.download('stopwords')
+
+    #get English stop words and print some
+    sw = nltk.corpus.stopwords.words('english')
+    
+
+    words = []
+
+    for token in tokens:
+        if token != 'â': 
+         if token not in sw:
+           words.append(token)
+        
+        
+    #import libraries for datavis
+    import matplotlib.pyplot as plt
+    import seaborn as sns
+
+    #figures in line and set visualiztion style
+    %matplotlib inline
+    sns.set()
+
+
+    #create a frequency distribution and plot
+    freqdist1 = nltk.FreqDist(words)
+    freqdist1.plot(30, title = title)
+    
+    
+    
+    
+#URL's of books to analyze on Gutenberg Project
+Dracula = 'http://www.gutenberg.org/files/345/345-h/345-h.htm'
+Tom_Sawyer = 'http://www.gutenberg.org/files/74/74-h/74-h.htm'  
+
+wordcounts(Tom_Sawyer)
+
+wordcount(Dracula)
